@@ -8,6 +8,13 @@ package steamworks
 type AppId_t uint32
 type CSteamID uint64
 type InputHandle_t uint64
+type InputActionSetHandle_t uint64
+type InputDigitalActionHandle_t uint64
+
+type InputDigitalActionData_t struct {
+	State  bool
+	Active bool
+}
 
 type ESteamInputType int32
 
@@ -52,7 +59,13 @@ type ISteamApps interface {
 type ISteamInput interface {
 	GetConnectedControllers() []InputHandle_t
 	GetInputTypeForHandle(inputHandle InputHandle_t) ESteamInputType
+	GetActionSetHandle(pszActionSetName string) InputActionSetHandle_t
+	ActivateActionSet(inputHandle InputHandle_t, actionSetHandle InputActionSetHandle_t)
+	GetCurrentActionSet(inputHandle InputHandle_t) InputActionSetHandle_t
+	GetDigitalActionHandle(pszActionName string) InputDigitalActionHandle_t
+	GetDigitalActionData(inputHandle InputHandle_t, digitalActionHandle InputDigitalActionHandle_t) InputDigitalActionData_t
 	Init(bExplicitlyCallRunFrame bool) bool
+	Shutdown() bool
 	RunFrame()
 }
 
@@ -102,7 +115,13 @@ const (
 	flatAPI_SteamInput                          = "SteamAPI_SteamInput_v006"
 	flatAPI_ISteamInput_GetConnectedControllers = "SteamAPI_ISteamInput_GetConnectedControllers"
 	flatAPI_ISteamInput_GetInputTypeForHandle   = "SteamAPI_ISteamInput_GetInputTypeForHandle"
+	flatAPI_ISteamInput_GetActionSetHandle      = "SteamAPI_ISteamInput_GetActionSetHandle"
+	flatAPI_ISteamInput_ActivateActionSet       = "SteamAPI_ISteamInput_ActivateActionSet"
+	flatAPI_ISteamInput_GetCurrentActionSet     = "SteamAPI_ISteamInput_GetCurrentActionSet"
+	flatAPI_ISteamInput_GetDigitalActionHandle  = "SteamAPI_ISteamInput_GetDigitalActionHandle"
+	flatAPI_ISteamInput_GetDigitalActionData    = "SteamAPI_ISteamInput_GetDigitalActionData"
 	flatAPI_ISteamInput_Init                    = "SteamAPI_ISteamInput_Init"
+	flatAPI_ISteamInput_Shutdown                = "SteamAPI_ISteamInput_Shutdown"
 	flatAPI_ISteamInput_RunFrame                = "SteamAPI_ISteamInput_RunFrame"
 
 	flatAPI_SteamRemoteStorage              = "SteamAPI_SteamRemoteStorage_v016"

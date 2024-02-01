@@ -182,6 +182,51 @@ func (s steamInput) GetInputTypeForHandle(inputHandle InputHandle_t) ESteamInput
 	return ESteamInputType(v)
 }
 
+func (s steamInput) GetActionSetHandle(pszActionSetName string) InputActionSetHandle_t {
+	cActionSetName := append([]byte(pszActionSetName), 0)
+	defer runtime.KeepAlive(cActionSetName)
+
+	h, err := theDLL.call(flatAPI_ISteamInput_GetActionSetHandle, uintptr(s), uintptr(unsafe.Pointer(&cActionSetName[0])))
+	if err != nil {
+		panic(err)
+	}
+	return InputActionSetHandle_t(h)
+}
+
+func (s steamInput) ActivateActionSet(inputHandle InputHandle_t, actionSetHandle InputActionSetHandle_t) {
+	_, err := theDLL.call(flatAPI_ISteamInput_ActivateActionSet, uintptr(s), uintptr(inputHandle), uintptr(actionSetHandle))
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (s steamInput) GetCurrentActionSet(inputHandle InputHandle_t) InputActionSetHandle_t {
+	h, err := theDLL.call(flatAPI_ISteamInput_GetCurrentActionSet, uintptr(s), uintptr(inputHandle))
+	if err != nil {
+		panic(err)
+	}
+	return InputActionSetHandle_t(h)
+}
+
+func (s steamInput) GetDigitalActionHandle(pszActionName string) InputDigitalActionHandle_t {
+	cActionName := append([]byte(pszActionName), 0)
+	defer runtime.KeepAlive(cActionName)
+
+	h, err := theDLL.call(flatAPI_ISteamInput_GetDigitalActionHandle, uintptr(s), uintptr(unsafe.Pointer(&cActionName[0])))
+	if err != nil {
+		panic(err)
+	}
+	return InputDigitalActionHandle_t(h)
+}
+
+func (s steamInput) GetDigitalActionData(inputHandle InputHandle_t, digitalActionHandle InputDigitalActionHandle_t) InputDigitalActionData_t {
+	h, err := theDLL.call(flatAPI_ISteamInput_GetDigitalActionData, uintptr(s), uintptr(inputHandle), uintptr(digitalActionHandle))
+	if err != nil {
+		panic(err)
+	}
+	return *(*InputDigitalActionData_t)(unsafe.Pointer(&h))
+}
+
 func (s steamInput) Init(bExplicitlyCallRunFrame bool) bool {
 	var callRunFrame uintptr
 	if bExplicitlyCallRunFrame {
@@ -189,6 +234,14 @@ func (s steamInput) Init(bExplicitlyCallRunFrame bool) bool {
 	}
 	// The error value seems unreliable.
 	v, _ := theDLL.call(flatAPI_ISteamInput_Init, uintptr(s), callRunFrame)
+	return byte(v) != 0
+}
+
+func (s steamInput) Shutdown() bool {
+	v, err := theDLL.call(flatAPI_ISteamInput_Shutdown, uintptr(s))
+	if err != nil {
+		panic(err)
+	}
 	return byte(v) != 0
 }
 
