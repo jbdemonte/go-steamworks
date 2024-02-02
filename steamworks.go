@@ -5,6 +5,8 @@
 
 package steamworks
 
+import "math"
+
 type AppId_t uint32
 type CSteamID uint64
 type InputHandle_t uint64
@@ -36,6 +38,10 @@ const (
 	ESteamInputType_SteamDeckController  ESteamInputType = 14
 	ESteamInputType_Count                ESteamInputType = 15
 	ESteamInputType_MaximumPossibleValue ESteamInputType = 255
+)
+
+const (
+	STEAM_INPUT_HANDLE_ALL_CONTROLLERS InputHandle_t = math.MaxUint64
 )
 
 const (
