@@ -64,6 +64,8 @@ type ISteamApps interface {
 
 type ISteamInput interface {
 	GetConnectedControllers() []InputHandle_t
+	GetControllerForGamepadIndex(nIndex int) InputHandle_t
+	GetGamepadIndexForController(ulControllerHandle InputHandle_t) int
 	GetInputTypeForHandle(inputHandle InputHandle_t) ESteamInputType
 	GetActionSetHandle(pszActionSetName string) InputActionSetHandle_t
 	ActivateActionSet(inputHandle InputHandle_t, actionSetHandle InputActionSetHandle_t)
@@ -118,17 +120,19 @@ const (
 	flatAPI_ISteamFriends_GetPersonaName  = "SteamAPI_ISteamFriends_GetPersonaName"
 	flatAPI_ISteamFriends_SetRichPresence = "SteamAPI_ISteamFriends_SetRichPresence"
 
-	flatAPI_SteamInput                          = "SteamAPI_SteamInput_v006"
-	flatAPI_ISteamInput_GetConnectedControllers = "SteamAPI_ISteamInput_GetConnectedControllers"
-	flatAPI_ISteamInput_GetInputTypeForHandle   = "SteamAPI_ISteamInput_GetInputTypeForHandle"
-	flatAPI_ISteamInput_GetActionSetHandle      = "SteamAPI_ISteamInput_GetActionSetHandle"
-	flatAPI_ISteamInput_ActivateActionSet       = "SteamAPI_ISteamInput_ActivateActionSet"
-	flatAPI_ISteamInput_GetCurrentActionSet     = "SteamAPI_ISteamInput_GetCurrentActionSet"
-	flatAPI_ISteamInput_GetDigitalActionHandle  = "SteamAPI_ISteamInput_GetDigitalActionHandle"
-	flatAPI_ISteamInput_GetDigitalActionData    = "SteamAPI_ISteamInput_GetDigitalActionData"
-	flatAPI_ISteamInput_Init                    = "SteamAPI_ISteamInput_Init"
-	flatAPI_ISteamInput_Shutdown                = "SteamAPI_ISteamInput_Shutdown"
-	flatAPI_ISteamInput_RunFrame                = "SteamAPI_ISteamInput_RunFrame"
+	flatAPI_SteamInput                               = "SteamAPI_SteamInput_v006"
+	flatAPI_ISteamInput_GetConnectedControllers      = "SteamAPI_ISteamInput_GetConnectedControllers"
+	flatAPI_ISteamInput_GetControllerForGamepadIndex = "SteamAPI_ISteamInput_GetControllerForGamepadIndex"
+	flatAPI_ISteamInput_GetGamepadIndexForController = "SteamAPI_ISteamInput_GetGamepadIndexForController"
+	flatAPI_ISteamInput_GetInputTypeForHandle        = "SteamAPI_ISteamInput_GetInputTypeForHandle"
+	flatAPI_ISteamInput_GetActionSetHandle           = "SteamAPI_ISteamInput_GetActionSetHandle"
+	flatAPI_ISteamInput_ActivateActionSet            = "SteamAPI_ISteamInput_ActivateActionSet"
+	flatAPI_ISteamInput_GetCurrentActionSet          = "SteamAPI_ISteamInput_GetCurrentActionSet"
+	flatAPI_ISteamInput_GetDigitalActionHandle       = "SteamAPI_ISteamInput_GetDigitalActionHandle"
+	flatAPI_ISteamInput_GetDigitalActionData         = "SteamAPI_ISteamInput_GetDigitalActionData"
+	flatAPI_ISteamInput_Init                         = "SteamAPI_ISteamInput_Init"
+	flatAPI_ISteamInput_Shutdown                     = "SteamAPI_ISteamInput_Shutdown"
+	flatAPI_ISteamInput_RunFrame                     = "SteamAPI_ISteamInput_RunFrame"
 
 	flatAPI_SteamRemoteStorage              = "SteamAPI_SteamRemoteStorage_v016"
 	flatAPI_ISteamRemoteStorage_FileWrite   = "SteamAPI_ISteamRemoteStorage_FileWrite"

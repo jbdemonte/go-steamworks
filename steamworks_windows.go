@@ -174,6 +174,22 @@ func (s steamInput) GetConnectedControllers() []InputHandle_t {
 	return handles[:int(v)]
 }
 
+func (s steamInput) GetControllerForGamepadIndex(nIndex int) InputHandle_t {
+	h, err := theDLL.call(flatAPI_ISteamInput_GetControllerForGamepadIndex, uintptr(s), uintptr(nIndex))
+	if err != nil {
+		panic(err)
+	}
+	return InputHandle_t(h)
+}
+
+func (s steamInput) GetGamepadIndexForController(ulControllerHandle InputHandle_t) int {
+	h, err := theDLL.call(flatAPI_ISteamInput_GetControllerForGamepadIndex, uintptr(s), uintptr(ulControllerHandle))
+	if err != nil {
+		panic(err)
+	}
+	return int(h)
+}
+
 func (s steamInput) GetInputTypeForHandle(inputHandle InputHandle_t) ESteamInputType {
 	v, err := theDLL.call(flatAPI_ISteamInput_GetInputTypeForHandle, uintptr(s), uintptr(inputHandle))
 	if err != nil {
